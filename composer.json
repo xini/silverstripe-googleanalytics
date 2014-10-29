@@ -1,0 +1,19 @@
+{
+	"name": "xini/silverstripe-googleanalytics",
+	"description": "Adds Google Analytics to the site using old and Universal Analytics with event and download tracking for both.",
+	"type": "silverstripe-module",
+	"keywords": ["silverstripe", "event tracking", "analytics"],
+	"homepage": "http://github.com/xini/silverstripe-googleanalytics",
+	"authors": [
+	{
+		"name": "Florian Thoma",
+		"email": "florian@innoweb.com.au"
+	}
+	],
+
+	"require":
+	{
+		"silverstripe/framework": "3.1.*",
+		"composer/installers": "*"
+	}
+}

@@ -1,0 +1,9 @@
+---
+Name: extensions
+---
+SiteConfig:
+  extensions:
+    ['GoogleAnalyticsExtension']
+ContentController:
+  extensions:
+    ['GoogleAnalyticsControllerExtension']

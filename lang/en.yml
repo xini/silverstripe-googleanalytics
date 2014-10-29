@@ -1,0 +1,10 @@
+en:
+  GoogleAnalyticsExtension:
+    COOKIEDOMAINHELP: 'If you want to use a non-standard cookie domain for your tracking, please enter it here. If this field is left empty, ''auto'' will be used.'
+    EVENTTRACKINGHELP: 'Activate this box if you want to track events like downloads and clicks on external, email and phone links. '
+    GOOGLEANALYTICSID: 'Google Analytics ID'
+    GOOGLEANALYTICSTAB: 'Google Analytics'
+    NONSTANDARDCOOKIEDOMAIN: 'Non-Standard Cookie Domain'
+    UNIVERSALANALYTICSHELP: 'Universal Analytics is the new analytics implementation from Google. If your Google Analytics account is set up to use Universal Analytics, please check this box.'
+    USEEVENTTRACKING: 'Use Event Tracking'
+    USEUNIVERSALANALYTICS: 'Use Universal Analytics'
