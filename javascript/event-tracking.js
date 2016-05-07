@@ -10,7 +10,7 @@
 		var filetypes = /\.(js|css|bmp|png|gif|jpg|jpeg|ico|pcx|tif|tiff|au|mid|midi|mpa|mp3|ogg|m4a|ra|wma|wav|cda|avi|mpg|mpeg|asf|wmv|m4v|mov|mkv|mp4|ogv|webm|swf|flv|ram|rm|doc|docx|txt|rtf|xls|xlsx|pages|ppt|pptx|pps|csv|cab|arj|tar|zip|zipx|sit|sitx|gz|tgz|bz2|ace|arc|pkg|dmg|hqx|jar|xml|pdf|gpx|kml)$/i;
 		var baseHref = ($('base').attr('href') != undefined) ? $('base').attr('href') : document.location.origin;
 		 
-		$('a').on('click', function(event) {
+		$('a:not(".do-not-track")').on('click', function(event) {
 			var el = $(this);
 			var track = true;
 			var href = (typeof(el.attr('href')) != 'undefined' ) ? el.attr('href') :"";
