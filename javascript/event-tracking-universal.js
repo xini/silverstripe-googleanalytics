@@ -11,7 +11,7 @@
 		var baseHref = ($('base').attr('href') != undefined) ? $('base').attr('href') : document.location.origin;
 		var hrefRedirect = '';
 	 
-		$('body').on('click', 'a', function(event) {
+		$('body').on('click', 'a:not(".do-not-track")', function(event) {
 			var el = $(this);
 			var track = true;
 			var href = (typeof(el.attr('href')) != 'undefined' ) ? el.attr('href') : '';
