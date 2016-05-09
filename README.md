@@ -44,3 +44,8 @@ class="download" data-extension="$Extension" data-filename="$FilenameWithoutID"
 ```
 
 This will trigger the event tracking script to record the clicks.
+
+### Exclude links from tacking
+
+To exclude links from being tracked add a class `do-not-track` to the anchor tag. 
+This prevent the onclick event from firing. 
