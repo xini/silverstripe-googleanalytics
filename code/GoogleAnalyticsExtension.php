@@ -3,34 +3,33 @@ class GoogleAnalyticsExtension extends DataExtension
 {
     
     private static $db = array(
+        'GoogleAnalyticsType' => "Enum(',Old Asynchronous Analytics,Universal Analytics,Google Tag Manager', '')",
         'GoogleAnalyticsID' => 'Varchar',
-        'GoogleAnalyticsUseUniversalAnalytics' => 'Boolean',
         'GoogleAnalyticsCookieDomain' => 'Varchar(255)',
         'GoogleAnalyticsUseEventTracking' => 'Boolean',
+        
+        // legacy and upgrading fields
+        'GoogleAnalyticsUseUniversalAnalytics' => 'Boolean',
+        'Upgraded' => 'Boolean',
     );
     
-    private static $defaults = array(
-        'GoogleAnalyticsUseUniversalAnalytics' => true,
-    );
-
     public function updateCMSFields(FieldList $fields)
     {
         $fields->addFieldsToTab(
             'Root.GoogleAnalytics',
             array(
-                TextField::create('GoogleAnalyticsID', _t('GoogleAnalyticsExtension.GOOGLEANALYTICSID', 'Google Analytics ID')),
-                    
-                FieldGroup::create(
-                    CheckboxField::create('GoogleAnalyticsUseUniversalAnalytics', '')
-                )
-                ->setTitle(_t('GoogleAnalyticsExtension.USEUNIVERSALANALYTICS', 'Use Universal Analytics'))
-                ->setName('GAUniversalAnalytics')
-                ->setRightTitle(
+                DropdownField::create(
+                    "GoogleAnalyticsType",
+                    _t('GoogleAnalyticsExtension.GoogleAnalyticsType', 'Google Analytics Type'),
+                    Singleton('SiteConfig')->dbObject('GoogleAnalyticsType')->enumValues()
+                )->setRightTitle(
                     _t(
-                        'GoogleAnalyticsExtension.UNIVERSALANALYTICSHELP',
-                        "Universal Analytics is the new analytics implementation from Google. If your Google Analytics account is set up to use Universal Analytics, please check this box."
+                        'GoogleAnalyticsExtension.TypeHelp',
+                        "Please select the correct Analytics type according to the setup of your Google Analytics account."
                     )
                 ),
+                
+                TextField::create('GoogleAnalyticsID', _t('GoogleAnalyticsExtension.GOOGLEANALYTICSID', 'Google Analytics ID')),
                     
                 TextField::create(
                     'GoogleAnalyticsCookieDomain',
@@ -58,4 +57,16 @@ class GoogleAnalyticsExtension extends DataExtension
         );
         $fields->fieldByName("Root.GoogleAnalytics")->setTitle(_t('GoogleAnalyticsExtension.GOOGLEANALYTICSTAB', 'Google Analytics'));
     }
+    
+    public function requireDefaultRecords() {
+    
+        // Perform migrations
+        Injector::inst()
+        ->create('GoogleAnalyticsUpgradeService')
+        ->setQuiet(true)
+        ->run();
+    
+        DB::alteration_message('Migrated googleanalytics', 'changed');
+    }
+    
 }

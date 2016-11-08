@@ -1,0 +1,10 @@
+SiteConfig:
+  extensions:
+    ['GoogleAnalyticsExtension']
+ContentController:
+  extensions:
+    ['GoogleAnalyticsControllerExtension']
+LeftAndMain:
+  extra_requirements_javascript:
+    - googleanalytics/javascript/cms-googleanalytics.js
+    

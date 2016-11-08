@@ -24,7 +24,7 @@ class GoogleAnalyticsControllerExtension extends Extension
      * that allow different views on the same URL, i.e. multi step forms.
      * Should return false if default url is to be used.
      * Can return the URL to be used as String or in an array with "URL" => "Page Title".
-     * The page title is only submitted if Universal Analytics is used.
+     * The page title is only submitted if Universal Analytics ot Google Tag Manager are used.
      * @return string|array|boolean
      */
     public function getCustomPageViewUrl()
@@ -37,7 +37,7 @@ class GoogleAnalyticsControllerExtension extends Extension
         if ($this->ShowGoogleAnalytics()) {
             $config = SiteConfig::current_site_config();
             
-            if ($config->GoogleAnalyticsUseUniversalAnalytics) {
+            if ($config->GoogleAnalyticsType == "Universal Analytics") {
                 
                 //  universal analytics
 
@@ -87,7 +87,8 @@ class GoogleAnalyticsControllerExtension extends Extension
                     Requirements::javascript(THIRDPARTY_DIR.'/jquery/jquery.min.js');
                     Requirements::javascript(GOOGLEANALYTICS_DIR.'/javascript/event-tracking-universal.js');
                 }
-            } else {
+                
+            } else if ($config->GoogleAnalyticsType == "Old Asynchronous Analytics") {
                 
                 // asynchronous analytics
 
@@ -140,6 +141,61 @@ class GoogleAnalyticsControllerExtension extends Extension
                     Requirements::javascript(THIRDPARTY_DIR.'/jquery/jquery.min.js');
                     Requirements::javascript(GOOGLEANALYTICS_DIR.'/javascript/event-tracking.js');
                 }
+            } else {
+                
+                // google tag manager
+                
+                if (!self::$use_template) {
+                    $pageviews = array();
+                    // virtual page view url
+                    if ($urldata = $this->owner->getCustomPageViewUrl()) {
+                        if (is_array($urldata)) {
+                            // check if associative array
+                            if (array_keys($urldata) !== range(0, count($urldata) - 1)) {
+                                foreach ($urldata as $url => $title) {
+                                    $pageviews[] = array(
+                                        'virtualPageURL' => $url,
+                                        'virtualPageTitle' => $title,
+                                    );
+                                }
+                            } else {
+                                foreach ($urldata as $url) {
+                                    $pageviews[] = array(
+                                        'virtualPageURL' => $url,
+                                    );
+                                }
+                            }
+                        } elseif (is_string($urldata)) {
+                            $pageviews[] = array(
+                                'virtualPageURL' => $urldata,
+                            );
+                        }
+                        if (count($pageviews)) {
+                            $tag = "<script>dataLayer = [];"; 
+                            foreach ($pageviews as $pageview) {
+                                $tag .= "dataLayer.push({'event': 'VirtualPageview','virtualPageURL': '".$pageview['virtualPageURL']."'";
+                                if (isset($pageview['virtualPageTitle'])) {
+                                    $tag .= ",'virtualPageTitle': '".$pageview['virtualPageTitle']."'";
+                                }
+                                $tag .= "});";
+                            }
+    		                $tag .= "</script>";
+                            Requirements::insertHeadTags($tag);
+                        }
+                    }
+                    
+                    // tracking code
+                    Requirements::insertHeadTags("
+	<noscript><iframe src=\"//www.googletagmanager.com/ns.html?id=".$config.GoogleAnalyticsID."\"
+	height=\"0\" width=\"0\" style=\"display:none;visibility:hidden\"></iframe></noscript>
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','".$config.GoogleAnalyticsID."');</script>
+					");
+                }
+                
             }
         }
     }
