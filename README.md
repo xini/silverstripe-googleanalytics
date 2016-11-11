@@ -1,11 +1,12 @@
 # silverstripe-googleanalytics
 
-Adds Google Analytics to the site using old and Universal Analytics with event and download tracking for both.
+Adds Google Analytics to the site using old and Universal Analytics with event and download tracking for both. It also supports the Goggle Tag Manager.
+
 It is derived from Shea's module for multisites (https://github.com/sheadawson/silverstripe-multisites-googleanalytics).
 
 ## Requirements
 
-* SilverStripe 3.1.*
+* SilverStripe 3.*
 
 ## Usage
 
@@ -23,12 +24,12 @@ your _config.php:
 MultisiteAnalyticsControllerExtension::$use_template = true;
 ```
 
-Use `<% include GoogleAnalytics %>` in your layout template to insert the tracking code.
+Use `<% include GoogleAnalytics %>` or `<% include GoogleTagManager %>` in your layout template to insert the tracking code.
 
-Copy the template `multisites-googleanalytics/templates/Includes/GoogleAnalytics.ss` 
+Copy the template `multisites-googleanalytics/templates/Includes/GoogleAnalytics.ss` or `multisites-googleanalytics/templates/Includes/GoogleTagManager.ss`
 to your theme to make changes to the tracking code.
 
-### Event tracking
+### Event tracking (old and Universal Analytics)
 
 The module also supports event tracking as well as tracking of external, download, email and phone links.
  

@@ -10,7 +10,7 @@ class GoogleAnalyticsExtension extends DataExtension
         
         // legacy and upgrading fields
         'GoogleAnalyticsUseUniversalAnalytics' => 'Boolean',
-        'Upgraded' => 'Boolean',
+        'GoogleAnalyticsUpgradedV2' => 'Boolean',
     );
     
     public function updateCMSFields(FieldList $fields)

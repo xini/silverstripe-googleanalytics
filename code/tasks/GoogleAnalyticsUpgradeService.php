@@ -14,7 +14,7 @@ class GoogleAnalyticsUpgradeService {
 		$this->log("Upgrading settings");
 
 		// List of rules that have been created in all stages
-		$configs = SiteConfig::get()->filter(array("Upgraded" => false));
+		$configs = SiteConfig::get()->filter(array("GoogleAnalyticsUpgradedV2" => false, "GoogleAnalyticsType" => ""));
 		foreach($configs as $config) {
 			$this->upgradeConfig($config);
 		}
@@ -28,7 +28,7 @@ class GoogleAnalyticsUpgradeService {
 		} else {
 		    $config->GoogleAnalyticsType = 'Old Asynchronous Analytics';
 		}
-		$config->Upgraded = true;
+		$config->GoogleAnalyticsUpgradedV2 = true;
 		$config->write();
 		
 	}
