@@ -1,10 +1,25 @@
-SiteConfig:
-  extensions:
-    ['GoogleAnalyticsExtension']
+---
+Name: share
+---
 ContentController:
   extensions:
-    ['GoogleAnalyticsControllerExtension']
+    - GoogleAnalyticsControllerExtension
 LeftAndMain:
   extra_requirements_javascript:
     - googleanalytics/javascript/cms-googleanalytics.js
-    
+GoogleAnalyticsControllerExtension:
+  use_template: false
+---
+Only:
+  classexists: 'Multisites'
+---
+Site:
+  extensions:
+    - GoogleAnalyticsExtension
+---
+Except:
+  classexists: 'Multisites'
+---
+SiteConfig:
+  extensions:
+    - GoogleAnalyticsExtension

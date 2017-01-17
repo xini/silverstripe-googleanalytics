@@ -13,15 +13,21 @@ class GoogleAnalyticsUpgradeService {
 	public function run() {
 		$this->log("Upgrading settings");
 
-		// List of rules that have been created in all stages
-		$configs = SiteConfig::get()->filter(array("GoogleAnalyticsUpgradedV2" => false, "GoogleAnalyticsType" => ""));
-		foreach($configs as $config) {
-			$this->upgradeConfig($config);
+		// get config class
+		$currentConfig = GoogleAnalyticsControllerExtension::get_analytics_config();
+		if ($currentConfig && $currentConfig->exists()) {
+		    $class = $currentConfig->ClassName;
+		
+    		// List of rules that have been created in all stages
+    		$configs = $class::get()->filter(array("GoogleAnalyticsUpgradedV2" => false, "GoogleAnalyticsType" => ""));
+    		foreach($configs as $config) {
+    			$this->upgradeConfig($config);
+    		}
 		}
 	}
 
-	protected function upgradeConfig(SiteConfig $config) {
-		$this->log("Upgrading site config ID = ".$config->ID);
+	protected function upgradeConfig($config) {
+		$this->log("Upgrading config ID = ".$config->ID);
 
 		if ($config->GoogleAnalyticsUseUniversalAnalytics) {
 		    $config->GoogleAnalyticsType = 'Universal Analytics';

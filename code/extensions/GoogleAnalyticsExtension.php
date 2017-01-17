@@ -15,13 +15,14 @@ class GoogleAnalyticsExtension extends DataExtension
     
     public function updateCMSFields(FieldList $fields)
     {
+        $config = GoogleAnalyticsControllerExtension::get_analytics_config();
         $fields->addFieldsToTab(
             'Root.GoogleAnalytics',
             array(
                 DropdownField::create(
                     "GoogleAnalyticsType",
                     _t('GoogleAnalyticsExtension.GoogleAnalyticsType', 'Google Analytics Type'),
-                    Singleton('SiteConfig')->dbObject('GoogleAnalyticsType')->enumValues()
+                    singleton($config->ClassName)->dbObject('GoogleAnalyticsType')->enumValues()
                 )->setRightTitle(
                     _t(
                         'GoogleAnalyticsExtension.TypeHelp',
@@ -58,13 +59,17 @@ class GoogleAnalyticsExtension extends DataExtension
         $fields->fieldByName("Root.GoogleAnalytics")->setTitle(_t('GoogleAnalyticsExtension.GOOGLEANALYTICSTAB', 'Google Analytics'));
     }
     
+    public function updateSiteCMSFields(FieldList $fields) {
+        $this->updateCMSFields($fields);
+    }
+    
     public function requireDefaultRecords() {
     
         // Perform migrations
         Injector::inst()
-        ->create('GoogleAnalyticsUpgradeService')
-        ->setQuiet(true)
-        ->run();
+            ->create('GoogleAnalyticsUpgradeService')
+            ->setQuiet(true)
+            ->run();
     
         DB::alteration_message('Migrated googleanalytics', 'changed');
     }
