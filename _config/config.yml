@@ -7,8 +7,6 @@ ContentController:
 LeftAndMain:
   extra_requirements_javascript:
     - googleanalytics/javascript/cms-googleanalytics.js
-GoogleAnalyticsControllerExtension:
-  use_template: false
 ---
 Only:
   classexists: 'Multisites'

@@ -1,8 +1,8 @@
 {
 	"name": "xini/silverstripe-googleanalytics",
-	"description": "Adds Google Analytics to the site using old and Universal Analytics with event and download tracking for both.",
+	"description": "Adds Google Analytics to the site using old Asynchronous Analytics and Universal Analytics with event and download tracking as well as Google Tag Manager.",
 	"type": "silverstripe-module",
-	"keywords": ["silverstripe", "event tracking", "analytics"],
+	"keywords": ["silverstripe", "event tracking", "analytics", "tag manager", "multisites"],
 	"homepage": "http://github.com/xini/silverstripe-googleanalytics",
 	"authors": [
 	{

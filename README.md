@@ -1,41 +1,38 @@
 # silverstripe-googleanalytics
 
-Adds Google Analytics to the site using the old Asynchronous Analytics and Universal Analytics with event and download tracking as well as Goggle Tag Manager.
+## Overview
+
+Adds Google Analytics to the site supporting:
+* old Asynchronous Analytics (with event and download tracking) 
+* Universal Analytics (with event and download tracking)
+* Goggle Tag Manager.
 
 The module is derived from [Shea's analytics module for multisites] (https://github.com/sheadawson/silverstripe-multisites-googleanalytics) and supports single site as well as [multisites] (https://github.com/silverstripe-australia/silverstripe-multisites) setups.
 
 ## Requirements
 
-* SilverStripe 3.*
+* SilverStripe ~3.1
+
+## Installation
+
+Install the module using composer:
+
+```
+composer require xini/silverstripe-googleanalytics dev-master
+```
+
+Add `<% include GoogleAnalyticsHead %>` in the `head` and `<% include GoogleAnalyticsBody %>` right after the opening `body` tag in your 
+main page template.
+
+Then run dev/build.
 
 ## Usage
 
-The default behaviour inserts the tracking code automatically in the page head.
+All settings can be configured from the CMS.
 
-The code only gets inserted in live mode.
+In your SiteConfig (or the config of your Site when using multisites) you find a tab 'Google Analyitcs'. Select the analytics type you have setup for your GA account and add the ID. Done.
 
-**Note:** If you are using Google Tag Manager it is recommended to add `<% include GoogleTagManagerScript %>` in 
-the `head` and `<% include GoogleTagManagerNoScript %>` right after the opening `body` tag in your 
-main page template. The automatic inclusion adds both parts in the head of the page (which is not correct for the noscript 
-part) because at the moment there is no way of injecting something into the body without changing the template.
-
-### Using a template for the tracking code
-
-If you want to use the template version of the tracking code (i.e. if you need 
-to modify the tracking code for your project/theme) add the following line to 
-your config.yml:
-
-```
-GoogleAnalyticsControllerExtension:
-  use_template: true
-```
-
-Use `<% include GoogleAnalytics %>` if you use GA or `<% include GoogleTagManagerScript %>` 
-and `<% include GoogleTagManagerNoScript %>` if you use GTM in your layout template to insert the tracking code.
-
-Copy the template `googleanalytics/templates/Includes/GoogleAnalytics.ss` or 
-`googleanalytics/templates/Includes/GoogleTagManagerScript.ss` and `googleanalytics/templates/Includes/GoogleTagManagerNoScript.ss`
-to your theme to make changes to the tracking code.
+All GA code only gets inserted in live mode.
 
 ### Event tracking (old and Universal Analytics)
 
@@ -43,7 +40,7 @@ The module supports event tracking in the form of external, download, email and 
  
 You can enable event tracking on the SiteConfig (or Site for multisites) in the CMS.
 
-#### Download tracking with custom controller urls (i.e. DMS module)
+#### Download tracking with custom controller urls (e.g. DMS module)
 
 In order to track downloads that use a controller url instead of the direct file 
 link (i.e. DMS module), please add the following attributes to the links:
