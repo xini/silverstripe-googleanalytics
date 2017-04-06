@@ -13,15 +13,19 @@ class GoogleAnalyticsUpgradeService {
 	public function run() {
 		$this->log("Upgrading settings");
 
-		// get config class
-		$currentConfig = GoogleAnalyticsControllerExtension::get_analytics_config();
-		if ($currentConfig && $currentConfig->exists()) {
-		    $class = $currentConfig->ClassName;
-		
-    		// List of rules that have been created in all stages
-    		$configs = $class::get()->filter(array("GoogleAnalyticsUpgradedV2" => false, "GoogleAnalyticsType" => ""));
-    		foreach($configs as $config) {
-    			$this->upgradeConfig($config);
+		// get correct config class
+		if (class_exists('Multisites')) {
+		    $configs = Site::get();
+		} else {
+		    $configs = SiteConfig::get();
+		}
+		if ($configs && $configs->exists()) {
+    		// filter only configs that have not been updated yet
+    		$configs = $configs->filter(array("GoogleAnalyticsUpgradedV2" => false, "GoogleAnalyticsType" => ""));
+    		if ($configs && $configs->exists()) {
+        		foreach($configs as $config) {
+        			$this->upgradeConfig($config);
+        		}
     		}
 		}
 	}
