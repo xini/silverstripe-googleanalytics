@@ -4,7 +4,7 @@ Name: share
 ContentController:
   extensions:
     - GoogleAnalyticsControllerExtension
-LeftAndMain:
+CMSMain:
   extra_requirements_javascript:
     - googleanalytics/javascript/cms-googleanalytics.js
 ---
