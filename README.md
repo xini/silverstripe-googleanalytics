@@ -3,25 +3,26 @@
 ## Overview
 
 Adds Google Analytics to the site supporting:
-* old Asynchronous Analytics (with event and download tracking) 
 * Universal Analytics (with event and download tracking)
-* Goggle Tag Manager.
+* Google Tag Manager.
 
-The module is derived from [Shea's analytics module for multisites] (https://github.com/sheadawson/silverstripe-multisites-googleanalytics) and supports single site as well as [multisites] (https://github.com/silverstripe-australia/silverstripe-multisites) setups.
+The module is derived from [Shea's analytics module for multisites](https://github.com/sheadawson/silverstripe-multisites-googleanalytics) and supports single site as well as [multisites](https://github.com/symbiote/silverstripe-multisites) setups.
 
 ## Requirements
 
-* SilverStripe ~3.1
+* SilverStripe CMS 4.x
+
+Note: this version is compatible with SilverStripe 4. For SilverStripe 3, please see the [3.x release line](https://github.com/xini/silverstripe-sitemap/tree/3).
 
 ## Installation
 
 Install the module using composer:
 
 ```
-composer require xini/silverstripe-googleanalytics dev-master
+composer require innoweb/silverstripe-googleanalytics dev-master
 ```
 
-Add `<% include GoogleAnalyticsHead %>` in the `head` and `<% include GoogleAnalyticsBody %>` right after the opening `body` tag in your 
+Add `<% include Innoweb/GoogleAnalytics/Head %>` in the `head` and `<% include Innoweb/GoogleAnalytics/Body %>` right after the opening `body` tag in your 
 main page template.
 
 Then run dev/build.
@@ -30,7 +31,7 @@ Then run dev/build.
 
 All settings can be configured from the CMS.
 
-In your SiteConfig (or the config of your Site when using multisites) you find a tab 'Google Analyitcs'. Select the analytics type you have setup for your GA account and add the ID. Done.
+In your SiteConfig (or the config of your Site when using multisites) you find a tab 'Google Analytics'. Select the analytics type you have setup for your GA account and add the ID. Done.
 
 All GA code only gets inserted in live mode.
 
@@ -51,7 +52,7 @@ class="download" data-extension="$Extension" data-filename="$FilenameWithoutID"
 
 This will trigger the event tracking script to record the clicks.
 
-#### Exclude links from tacking
+#### Exclude links from tracking
 
 To exclude links from being tracked add a class `do-not-track` to the anchor tag. 
 This prevent the onclick event from firing. 

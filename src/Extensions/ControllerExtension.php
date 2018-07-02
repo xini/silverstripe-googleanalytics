@@ -1,23 +1,30 @@
 <?php
 
-class GoogleAnalyticsControllerExtension extends Extension
-{
-    
-    public static function get_analytics_config() {
-        if (class_exists('Multisites')) {
-            return Multisites::inst()->getCurrentSite();
+namespace Innoweb\GoogleAnalytics\Extensions;
+
+use SilverStripe\Control\Director;
+use SilverStripe\Core\Extension;
+use SilverStripe\ORM\FieldType\DBHTMLText;
+use SilverStripe\SiteConfig\SiteConfig;
+use SilverStripe\View\Requirements;
+
+class ControllerExtension extends Extension {
+
+    public static function get_analytics_config()
+    {
+        if (class_exists('Symbiote\Multisites\Multisites')) {
+            return \Symbiote\Multisites\Multisites::inst()->getCurrentSite();
         } else {
             return SiteConfig::current_site_config();
         }
-        return null;
     }
-    
-    
+
+
     public function AnalyticsConfig()
     {
         return self::get_analytics_config();
     }
-    
+
     public function ShowGoogleAnalytics()
     {
         $config = self::get_analytics_config();
@@ -45,18 +52,19 @@ class GoogleAnalyticsControllerExtension extends Extension
     {
         return false;
     }
-    
-    public function getPageViewUrlData() {
+
+    public function getPageViewUrlData()
+    {
         if ($this->ShowGoogleAnalytics()) {
             $config = self::get_analytics_config();
             if ($config && $config->exists()) {
-                
-                if ($config->GoogleAnalyticsType == "Universal Analytics") {
-                    
+
+                if ($config->GoogleAnalyticsType == 'Universal Analytics') {
+
                     $pageview = "ga('send', 'pageview');";
                     if ($urldata = $this->owner->getCustomPageViewUrl()) {
                         if (is_array($urldata)) {
-                            $pageview = "";
+                            $pageview = '';
                             // check if associative array
                             if (array_keys($urldata) !== range(0, count($urldata) - 1)) {
                                 foreach ($urldata as $url => $title) {
@@ -71,32 +79,10 @@ class GoogleAnalyticsControllerExtension extends Extension
                             $pageview = "ga('send', 'pageview', '$urldata');";
                         }
                     }
-                    return $pageview;
-                
-                } else if ($config->GoogleAnalyticsType == "Old Asynchronous Analytics") {
-                    
-                    $pageview = "_gaq.push(['_trackPageview']);";
-                    if ($urldata = $this->owner->getCustomPageViewUrl()) {
-                        if (is_array($urldata)) {
-                            $pageview = "";
-                            // check if associative array
-                            if (array_keys($urldata) !== range(0, count($urldata) - 1)) {
-                                foreach ($urldata as $url => $title) {
-                                    $pageview .= "_gaq.push(['_trackPageview', '$url']);";
-                                }
-                            } else {
-                                foreach ($urldata as $url) {
-                                    $pageview .= "_gaq.push(['_trackPageview', '$url']);";
-                                }
-                            }
-                        } elseif (is_string($urldata)) {
-                            $pageview = "_gaq.push(['_trackPageview', '$urldata']);";
-                        }
-                    }
-                    return $pageview;
-                    
-                } else if ($config->GoogleAnalyticsType == "Google Tag Manager") {
-                    
+                    return DBHTMLText::create()->setValue($pageview);
+
+                } else if ($config->GoogleAnalyticsType == 'Google Tag Manager') {
+
                     $pageviews = array();
                     // virtual page view url
                     if ($urldata = $this->owner->getCustomPageViewUrl()) {
@@ -131,39 +117,29 @@ class GoogleAnalyticsControllerExtension extends Extension
                                 $tag .= "});";
                             }
                             $tag .= "</script>";
-                            return $tag;
+                            return DBHTMLText::create()->setValue($tag);
                         }
                     }
                 }
             }
         }
     }
-    
+
     public function onAfterInit()
     {
         if ($this->ShowGoogleAnalytics()) {
             $config = self::get_analytics_config();
-            
+
             if ($config && $config->exists()) {
-            
-                if ($config->GoogleAnalyticsType == "Universal Analytics") {
-                    
-                    //  universal analytics
-                    // event tracking
+
+                if ($config->GoogleAnalyticsType == 'Universal Analytics') {
+
+                    //  universal analytics event tracking
                     if ($config->GoogleAnalyticsUseEventTracking) {
-                        Requirements::javascript(THIRDPARTY_DIR.'/jquery/jquery.min.js');
-                        Requirements::javascript(GOOGLEANALYTICS_DIR.'/javascript/event-tracking-universal.js');
+                        Requirements::javascript('silverstripe/admin: thirdparty/jquery/jquery.js');
+                        Requirements::javascript('innoweb/silverstripe-googleanalytics: ' . 'client/js/event-tracking-universal.js');
                     }
-                    
-                } else if ($config->GoogleAnalyticsType == "Old Asynchronous Analytics") {
-                    
-                    // asynchronous analytics
-                    // event tracking
-                    if ($config->GoogleAnalyticsUseEventTracking) {
-                        Requirements::javascript(THIRDPARTY_DIR.'/jquery/jquery.min.js');
-                        Requirements::javascript(GOOGLEANALYTICS_DIR.'/javascript/event-tracking.js');
-                    }
-                    
+
                 }
             }
         }
