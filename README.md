@@ -22,7 +22,7 @@ Install the module using composer:
 composer require innoweb/silverstripe-googleanalytics dev-master
 ```
 
-Add `<% include Innoweb/GoogleAnalytics/Head %>` in the `head` and `<% include Innoweb/GoogleAnalytics/Body %>` right after the opening `body` tag in your 
+Add `<% include Innoweb/GoogleAnalytics/GoogleAnalyticsHead %>` in the `head` and `<% include Innoweb/GoogleAnalytics/GoogleAnalyticsBody %>` right after the opening `body` tag in your 
 main page template.
 
 Then run dev/build.
