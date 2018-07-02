@@ -1,23 +1,20 @@
 ---
-Name: share
+Name: innowebgoogleanalytics
 ---
-ContentController:
+SilverStripe\CMS\Controllers\ContentController:
   extensions:
-    - GoogleAnalyticsControllerExtension
-CMSMain:
-  extra_requirements_javascript:
-    - googleanalytics/javascript/cms-googleanalytics.js
+    - Innoweb\GoogleAnalytics\Extensions\ControllerExtension
 ---
 Only:
-  classexists: 'Multisites'
+  classexists: 'Symbiote\Multisites\Multisites'
 ---
-Site:
+Symbiote\Multisites\Model\Site:
   extensions:
-    - GoogleAnalyticsExtension
+    - Innoweb\GoogleAnalytics\Extensions\ConfigExtension
 ---
 Except:
-  classexists: 'Multisites'
+  classexists: 'Symbiote\Multisites\Multisites'
 ---
-SiteConfig:
+Silverstripe\SiteConfig\SiteConfig:
   extensions:
-    - GoogleAnalyticsExtension
+    - Innoweb\GoogleAnalytics\Extensions\ConfigExtension
