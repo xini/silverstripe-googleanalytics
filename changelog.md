@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.2]
+
+* make GA settings optional
+* fix template inclusion in readme
+
 ## [4.0.1]
 
 * update license information

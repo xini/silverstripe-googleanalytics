@@ -17,7 +17,7 @@ class ConfigExtension extends DataExtension
 {
 
     private static $db = [
-        'GoogleAnalyticsType'               => "Enum(',Universal Analytics,Google Tag Manager', '')",
+        'GoogleAnalyticsType'               => 'Enum(array("","Universal Analytics","Google Tag Manager"), "")',
         'GoogleAnalyticsID'                 => 'Varchar',
         'GoogleAnalyticsCookieDomain'       => 'Varchar(255)',
         'GoogleAnalyticsUseEventTracking'   => 'Boolean',
@@ -46,7 +46,7 @@ class ConfigExtension extends DataExtension
                         'GoogleAnalyticsExtension.TypeHelp',
                         "Please select the correct Analytics type according to the setup of your Google Analytics account."
                     )
-                ),
+                )->setEmptyString('none'),
 
                 TextField::create('GoogleAnalyticsID', _t('GoogleAnalyticsExtension.GOOGLEANALYTICSID', 'Google Analytics ID')),
 
