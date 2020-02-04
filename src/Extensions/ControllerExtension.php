@@ -13,7 +13,7 @@ class ControllerExtension extends Extension {
     public static function get_analytics_config()
     {
         if (class_exists('Symbiote\Multisites\Multisites')) {
-            return \Symbiote\Multisites\Multisites::inst()->getCurrentSite();
+            return \Symbiote\Multisites\Multisites::inst()->getActiveSite();
         } else {
             return SiteConfig::current_site_config();
         }
