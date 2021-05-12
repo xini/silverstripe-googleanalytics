@@ -2,18 +2,24 @@
 
 namespace Innoweb\GoogleAnalytics\Extensions;
 
+use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Extension;
 use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\View\Requirements;
+use SilverStripe\Control\Controller;
 
 class ControllerExtension extends Extension {
 
     public static function get_analytics_config()
     {
         if (class_exists('Symbiote\Multisites\Multisites')) {
-            return \Symbiote\Multisites\Multisites::inst()->getActiveSite();
+            if (is_subclass_of(Controller::curr(), LeftAndMain::class)) {
+                return \Symbiote\Multisites\Multisites::inst()->getActiveSite();
+            } else {
+                return \Symbiote\Multisites\Multisites::inst()->getCurrentSite();
+            }
         } else {
             return SiteConfig::current_site_config();
         }

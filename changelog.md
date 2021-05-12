@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.4]
+
+* for multisites, use current instead of active site in frontend to prevent session creation
+
 ## [4.0.3]
 
 * ensure get_analytics_config returns ActiveSite rather than Current for multisites
