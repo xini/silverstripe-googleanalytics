@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.0]
+
+* upgrade to Silverstripe 5
+* remove Universal Analytics support
+* add GTag support
+* remove v2 upgrade task
+
 ## [4.0.4]
 
 * for multisites, use current instead of active site in frontend to prevent session creation
@@ -24,7 +31,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.0.0]
 
-* upgraded for SilverStripe 4 compatibility
+* upgraded for Silverstripe 4 compatibility
 * removed option of Old Asynchronous Analytics
 * updated upgrade service to handle migration from v1/2/3 to v4 (`Old Asynchronous Analytics` config settings migrated to `Universal Analytics`)
 

@@ -7,7 +7,6 @@ use SilverStripe\Control\Director;
 use SilverStripe\Core\Extension;
 use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\SiteConfig\SiteConfig;
-use SilverStripe\View\Requirements;
 use SilverStripe\Control\Controller;
 
 class ControllerExtension extends Extension {
@@ -24,7 +23,6 @@ class ControllerExtension extends Extension {
             return SiteConfig::current_site_config();
         }
     }
-
 
     public function AnalyticsConfig()
     {
@@ -65,24 +63,41 @@ class ControllerExtension extends Extension {
             $config = self::get_analytics_config();
             if ($config && $config->exists()) {
 
-                if ($config->GoogleAnalyticsType == 'Universal Analytics') {
+                if ($config->GoogleAnalyticsType == 'Global Site Tag') {
 
-                    $pageview = "ga('send', 'pageview');";
                     if ($urldata = $this->owner->getCustomPageViewUrl()) {
                         if (is_array($urldata)) {
-                            $pageview = '';
                             // check if associative array
                             if (array_keys($urldata) !== range(0, count($urldata) - 1)) {
                                 foreach ($urldata as $url => $title) {
-                                    $pageview .= "ga('send', { 'hitType': 'pageview', 'page': '$url', 'title': '$title' });";
+                                    $pageviews[] = array(
+                                        'page_location' => $url,
+                                        'page_title' => $title,
+                                    );
                                 }
                             } else {
                                 foreach ($urldata as $url) {
-                                    $pageview .= "ga('send', 'pageview', '$url');";
+                                    $pageviews[] = array(
+                                        'page_location' => $url,
+                                    );
                                 }
                             }
                         } elseif (is_string($urldata)) {
-                            $pageview = "ga('send', 'pageview', '$urldata');";
+                            $pageviews[] = array(
+                                'page_location' => $urldata,
+                            );
+                        }
+                        if (count($pageviews)) {
+                            $tag = "<script>";
+                            foreach ($pageviews as $pageview) {
+                                $tag .= "gtag('event', 'page_view', { page_location: '".$pageview['virtualPageURL']."'";
+                                if (isset($pageview['virtualPageTitle'])) {
+                                    $tag .= ", page_title: '".$pageview['virtualPageTitle']."'";
+                                }
+                                $tag .= "});";
+                            }
+                            $tag .= "</script>";
+                            return DBHTMLText::create()->setValue($tag);
                         }
                     }
                     return DBHTMLText::create()->setValue($pageview);
@@ -126,26 +141,6 @@ class ControllerExtension extends Extension {
                             return DBHTMLText::create()->setValue($tag);
                         }
                     }
-                }
-            }
-        }
-    }
-
-    public function onAfterInit()
-    {
-        if ($this->ShowGoogleAnalytics()) {
-            $config = self::get_analytics_config();
-
-            if ($config && $config->exists()) {
-
-                if ($config->GoogleAnalyticsType == 'Universal Analytics') {
-
-                    //  universal analytics event tracking
-                    if ($config->GoogleAnalyticsUseEventTracking) {
-                        Requirements::javascript('silverstripe/admin: thirdparty/jquery/jquery.js');
-                        Requirements::javascript('innoweb/silverstripe-googleanalytics: ' . 'client/js/event-tracking-universal.js');
-                    }
-
                 }
             }
         }

@@ -1,6 +1,6 @@
 {
 	"name": "innoweb/silverstripe-googleanalytics",
-	"description": "Adds Google Analytics to the site using Universal Analytics with event and download tracking as well as Google Tag Manager.",
+	"description": "Adds Google Analytics to the site using Gtag or Google Tag Manager.",
 	"type": "silverstripe-vendormodule",
     "license": "BSD-3-Clause",
 	"keywords": ["silverstripe", "event tracking", "analytics", "tag manager", "multisites"],
@@ -13,18 +13,12 @@
 	],
 
 	"require": {
-		"silverstripe/framework": "^4",
-        "unclecheese/display-logic": "^2.0.0"
+		"silverstripe/framework": "^5"
 	},
     "autoload": {
         "psr-4": {
             "Innoweb\\GoogleAnalytics\\": "src/"
         }
-    },
-    "extra": {
-        "expose": [
-            "client"
-        ]
     },
     "replace": {
         "xini/silverstripe-googleanalytics": "self.version"

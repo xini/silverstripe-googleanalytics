@@ -1,10 +1,6 @@
 de:
   GoogleAnalyticsExtension:
-    COOKIEDOMAINHELP: 'Wenn Sie nicht die Standard-Domain als cookie domain verwenden wollen, fügen Sie sie hier ein. Wenn dieses Feld leer gelassen wird, wird ''auto'' verwendet.'
-    EVENTTRACKINGHELP: 'Aktivieren Sie diese Box wenn Sie events wie Downloads oder Clicks auf externe, email oder Telefon-Link on external, email and phone links tracken wollen.'
     GOOGLEANALYTICSID: 'Google Analytics ID'
     GOOGLEANALYTICSTAB: 'Google Analytics'
-    NONSTANDARDCOOKIEDOMAIN: 'Nicht-Standard Cookie Domain'
-    UNIVERSALANALYTICSHELP: 'Universal Analytics ist die neue Analytics Implementierung von Google. Wenn Ihr Google Analytics Account als Universal Analytics aufgesetzt ist, aktivieren Sie diese Box.'
-    USEEVENTTRACKING: 'Event Tracking verwenden'
-    USEUNIVERSALANALYTICS: 'Universal Analytics verwenden'
+    GoogleTagType: 'Tag Typ'
+    TypeHelp: 'Bitte wählen Sie den korrekten Analytics-Typ gemäß den Einstellungen Ihres Google Analytics-Kontos aus.'
