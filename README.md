@@ -6,7 +6,7 @@ Adds Google Analytics to the site supporting:
 * Global Site Tag (gtag.js)
 * Google Tag Manager (GTM)
 
-The module is derived from [Shea's analytics module for multisites](https://github.com/sheadawson/silverstripe-multisites-googleanalytics) and supports single site as well as [multisites](https://github.com/symbiote/silverstripe-multisites) setups.
+The module is derived from [Shea's analytics module for multisites](https://github.com/sheadawson/silverstripe-multisites-googleanalytics) and supports single site, [multisites](https://github.com/symbiote/silverstripe-multisites) and [configured-multisites](https://github.com/fromholdio/silverstripe-configured-multisites) setups.
 
 ## Requirements
 

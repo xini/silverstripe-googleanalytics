@@ -19,6 +19,12 @@ class ControllerExtension extends Extension {
             } else {
                 return \Symbiote\Multisites\Multisites::inst()->getCurrentSite();
             }
+        } elseif (class_exists('Fromholdio\ConfiguredMultisites\Multisites')) {
+            if (is_subclass_of(Controller::curr(), LeftAndMain::class)) {
+                return \Fromholdio\ConfiguredMultisites\Multisites::inst()->getActiveSite();
+            } else {
+                return \Fromholdio\ConfiguredMultisites\Multisites::inst()->getCurrentSite();
+            }
         } else {
             return SiteConfig::current_site_config();
         }

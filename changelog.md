@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.0]
+
+* add support for fromholdio/silverstripe-configured-multisites
+
 ## [5.0.0]
 
 * upgrade to Silverstripe 5
