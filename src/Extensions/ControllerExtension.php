@@ -106,7 +106,7 @@ class ControllerExtension extends Extension {
                             return DBHTMLText::create()->setValue($tag);
                         }
                     }
-                    return DBHTMLText::create()->setValue($pageview);
+                    return;
 
                 } else if ($config->GoogleAnalyticsType == 'Google Tag Manager') {
 
