@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.2]
+
+* fix config for fromholdio/silverstripe-configured-multisites
+
 ## [5.1.1]
 
 * Fix Undefined variable $pageview error (thanks @portable-michael-nk)

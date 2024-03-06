@@ -4,16 +4,30 @@ Name: innowebgoogleanalytics
 SilverStripe\CMS\Controllers\ContentController:
   extensions:
     - Innoweb\GoogleAnalytics\Extensions\ControllerExtension
+
 ---
 Only:
-  classexists: 'Symbiote\Multisites\Multisites'
+  moduleexists:
+    - 'symbiote/silverstripe-multisites'
 ---
 Symbiote\Multisites\Model\Site:
   extensions:
     - Innoweb\GoogleAnalytics\Extensions\ConfigExtension
+
+---
+Only:
+  moduleexists:
+    - 'fromholdio/silverstripe-configured-multisites'
+---
+Fromholdio\ConfiguredMultisites\Model\Site:
+  extensions:
+    - Innoweb\GoogleAnalytics\Extensions\ConfigExtension
+
 ---
 Except:
-  classexists: 'Symbiote\Multisites\Multisites'
+  moduleexists:
+    - 'symbiote/silverstripe-multisites'
+    - 'fromholdio/silverstripe-configured-multisites'
 ---
 Silverstripe\SiteConfig\SiteConfig:
   extensions:
