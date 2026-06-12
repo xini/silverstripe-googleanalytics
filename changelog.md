@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.0.0]
+
+* upgrade to Silverstripe 6
+
 ## [5.1.3]
 
 * fix injection of GA tags for URLs containing '/dev', e.g. '/blog/developing-silverstripe-modules'

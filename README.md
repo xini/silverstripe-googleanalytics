@@ -10,11 +10,7 @@ The module is derived from [Shea's analytics module for multisites](https://gith
 
 ## Requirements
 
-* Silverstripe CMS 5.x
-
-Note: this version is compatible with Silverstripe 5. 
-For Silverstripe 4, please see the [4.x release line](https://github.com/xini/silverstripe-sitemap/tree/4).
-For Silverstripe 3, please see the [3.x release line](https://github.com/xini/silverstripe-sitemap/tree/3).
+* Silverstripe 6
 
 ## Installation
 
@@ -24,7 +20,7 @@ Install the module using composer:
 composer require innoweb/silverstripe-googleanalytics dev-master
 ```
 
-Add `<% include Innoweb/GoogleAnalytics/GoogleAnalyticsHead %>` in the `head` and `<% include Innoweb/GoogleAnalytics/GoogleAnalyticsBody %>` right after the opening `body` tag in your 
+Add `<% include Innoweb/GoogleAnalytics/GoogleAnalyticsHead %>` in the `head` and `<% include Innoweb/GoogleAnalytics/GoogleAnalyticsBody %>` right after the opening `body` tag in your
 main page template.
 
 Then run dev/build.
