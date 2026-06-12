@@ -2,12 +2,12 @@
 
 namespace Innoweb\GoogleAnalytics\Extensions;
 
+use SilverStripe\Core\Extension;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
-use SilverStripe\ORM\DataExtension;
 
-class ConfigExtension extends DataExtension
+class ConfigExtension extends Extension
 {
 
     private static $db = [
