@@ -1,33 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Innoweb\GoogleAnalytics\Extensions;
 
 use SilverStripe\Admin\LeftAndMain;
+use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Extension;
 use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\SiteConfig\SiteConfig;
-use SilverStripe\Control\Controller;
 
-class ControllerExtension extends Extension {
+class ControllerExtension extends Extension
+{
 
     public static function get_analytics_config()
     {
         if (class_exists('Symbiote\Multisites\Multisites')) {
             if (is_subclass_of(Controller::curr(), LeftAndMain::class)) {
                 return \Symbiote\Multisites\Multisites::inst()->getActiveSite();
-            } else {
-                return \Symbiote\Multisites\Multisites::inst()->getCurrentSite();
             }
-        } elseif (class_exists('Fromholdio\ConfiguredMultisites\Multisites')) {
+
+            return \Symbiote\Multisites\Multisites::inst()->getCurrentSite();
+        }
+
+        if (class_exists('Fromholdio\ConfiguredMultisites\Multisites')) {
             if (is_subclass_of(Controller::curr(), LeftAndMain::class)) {
                 return \Fromholdio\ConfiguredMultisites\Multisites::inst()->getActiveSite();
-            } else {
-                return \Fromholdio\ConfiguredMultisites\Multisites::inst()->getCurrentSite();
             }
-        } else {
-            return SiteConfig::current_site_config();
+
+            return \Fromholdio\ConfiguredMultisites\Multisites::inst()->getCurrentSite();
         }
+
+        return SiteConfig::current_site_config();
     }
 
     public function AnalyticsConfig()
@@ -35,20 +40,16 @@ class ControllerExtension extends Extension {
         return self::get_analytics_config();
     }
 
-    public function ShowGoogleAnalytics()
+    public function ShowGoogleAnalytics(): bool
     {
         $config = self::get_analytics_config();
-        if (Director::isLive()
+        return Director::isLive()
             && $config
             && $config->exists()
             && $config->GoogleAnalyticsID
-            && strpos($_SERVER['REQUEST_URI'], '/admin/') !== 0
-            && strpos($_SERVER['REQUEST_URI'], '/Security/') !== 0
-            && strpos($_SERVER['REQUEST_URI'], '/dev/') !== 0
-        ) {
-            return true;
-        }
-        return false;
+            && !str_starts_with((string) $_SERVER['REQUEST_URI'], '/admin/')
+            && !str_starts_with((string) $_SERVER['REQUEST_URI'], '/Security/')
+            && !str_starts_with((string) $_SERVER['REQUEST_URI'], '/dev/');
     }
 
     /**
@@ -59,7 +60,7 @@ class ControllerExtension extends Extension {
      * The page title is only submitted if Universal Analytics or Google Tag Manager are used.
      * @return string|array|boolean
      */
-    public function getCustomPageViewUrl()
+    public function getCustomPageViewUrl(): bool
     {
         return false;
     }
@@ -69,81 +70,86 @@ class ControllerExtension extends Extension {
         if ($this->ShowGoogleAnalytics()) {
             $config = self::get_analytics_config();
             if ($config && $config->exists()) {
-
                 if ($config->GoogleAnalyticsType == 'Global Site Tag') {
-
-                    if ($urldata = $this->owner->getCustomPageViewUrl()) {
+                    if ($urldata = $this->getOwner()->getCustomPageViewUrl()) {
                         if (is_array($urldata)) {
                             // check if associative array
                             if (array_keys($urldata) !== range(0, count($urldata) - 1)) {
                                 foreach ($urldata as $url => $title) {
-                                    $pageviews[] = array(
+                                    $pageviews[] = [
                                         'page_location' => $url,
                                         'page_title' => $title,
-                                    );
+                                    ];
                                 }
                             } else {
                                 foreach ($urldata as $url) {
-                                    $pageviews[] = array(
+                                    $pageviews[] = [
                                         'page_location' => $url,
-                                    );
+                                    ];
                                 }
                             }
                         } elseif (is_string($urldata)) {
-                            $pageviews[] = array(
+                            $pageviews[] = [
                                 'page_location' => $urldata,
-                            );
+                            ];
                         }
-                        if (count($pageviews)) {
+
+                        if ($pageviews !== []) {
                             $tag = "<script>";
                             foreach ($pageviews as $pageview) {
-                                $tag .= "gtag('event', 'page_view', { page_location: '".$pageview['virtualPageURL']."'";
+                                $tag .= "gtag('event', 'page_view', { page_location: '" . $pageview['virtualPageURL'] . "'";
                                 if (isset($pageview['virtualPageTitle'])) {
-                                    $tag .= ", page_title: '".$pageview['virtualPageTitle']."'";
+                                    $tag .= ", page_title: '" . $pageview['virtualPageTitle'] . "'";
                                 }
+
                                 $tag .= "});";
                             }
+
                             $tag .= "</script>";
                             return DBHTMLText::create()->setValue($tag);
                         }
                     }
+
                     return;
+                }
 
-                } else if ($config->GoogleAnalyticsType == 'Google Tag Manager') {
-
-                    $pageviews = array();
+                if ($config->GoogleAnalyticsType == 'Google Tag Manager') {
+                    $pageviews = [];
                     // virtual page view url
-                    if ($urldata = $this->owner->getCustomPageViewUrl()) {
+                    if ($urldata = $this->getOwner()->getCustomPageViewUrl()) {
                         if (is_array($urldata)) {
                             // check if associative array
                             if (array_keys($urldata) !== range(0, count($urldata) - 1)) {
                                 foreach ($urldata as $url => $title) {
-                                    $pageviews[] = array(
+                                    $pageviews[] = [
                                         'virtualPageURL' => $url,
                                         'virtualPageTitle' => $title,
-                                    );
+                                    ];
                                 }
                             } else {
                                 foreach ($urldata as $url) {
-                                    $pageviews[] = array(
+                                    $pageviews[] = [
                                         'virtualPageURL' => $url,
-                                    );
+                                    ];
                                 }
                             }
                         } elseif (is_string($urldata)) {
-                            $pageviews[] = array(
+                            $pageviews[] = [
                                 'virtualPageURL' => $urldata,
-                            );
+                            ];
                         }
-                        if (count($pageviews)) {
+
+                        if ($pageviews !== []) {
                             $tag = "<script>dataLayer = [];";
                             foreach ($pageviews as $pageview) {
-                                $tag .= "dataLayer.push({'event': 'VirtualPageview','virtualPageURL': '".$pageview['virtualPageURL']."'";
+                                $tag .= "dataLayer.push({'event': 'VirtualPageview','virtualPageURL': '" . $pageview['virtualPageURL'] . "'";
                                 if (isset($pageview['virtualPageTitle'])) {
-                                    $tag .= ",'virtualPageTitle': '".$pageview['virtualPageTitle']."'";
+                                    $tag .= ",'virtualPageTitle': '" . $pageview['virtualPageTitle'] . "'";
                                 }
+
                                 $tag .= "});";
                             }
+
                             $tag .= "</script>";
                             return DBHTMLText::create()->setValue($tag);
                         }

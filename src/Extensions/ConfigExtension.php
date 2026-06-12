@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Innoweb\GoogleAnalytics\Extensions;
 
 use SilverStripe\Core\Extension;
@@ -10,12 +12,13 @@ use SilverStripe\Forms\TextField;
 class ConfigExtension extends Extension
 {
 
-    private static $db = [
-        'GoogleAnalyticsType'               => 'Enum(array("","Global Site Tag","Google Tag Manager"), "")',
-        'GoogleAnalyticsID'                 => 'Varchar',
+
+    private static array $db = [
+        'GoogleAnalyticsType' => 'Enum(",Global Site Tag,Google Tag Manager", "")',
+        'GoogleAnalyticsID' => 'Varchar',
     ];
 
-    public function updateCMSFields(FieldList $fields)
+    public function updateCMSFields(FieldList $fields): void
     {
         $config = ControllerExtension::get_analytics_config();
         $fields->addFieldsToTab(
@@ -38,7 +41,8 @@ class ConfigExtension extends Extension
         $fields->fieldByName("Root.GoogleAnalytics")->setTitle(_t('GoogleAnalyticsExtension.GOOGLEANALYTICSTAB', 'Google Analytics'));
     }
 
-    public function updateSiteCMSFields(FieldList $fields) {
+    public function updateSiteCMSFields(FieldList $fields): void
+    {
         $this->updateCMSFields($fields);
     }
 }
